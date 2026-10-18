@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投杼 | Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg: #121212;
+            --text: #e6e6e6;
+            --muted: #aaa;
+            --accent: #72a0d8;
+            --card: #1e1e1e;
+            --border: #333;
+        }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        .site-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .site-title a {
+            color: var(--text);
+            text-decoration: none;
+        }
+        .site-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-right: 24px;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--accent);
+        }
+        main {
+            padding: 40px 0;
+        }
+        .post-item {
+            padding: 20px;
+            background: var(--card);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .post-item:hover {
+            transform: translateY(-2px);
+        }
+        .post-item h2 {
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+        }
+        .post-item h2 a {
+            color: var(--text);
+            text-decoration: none;
+        }
+        .post-item h2 a:hover {
+            color: var(--accent);
+        }
+        .post-date {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom:10px;
+        }
+        .post-excerpt {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        footer {
+            padding:32px 0;
+            border-top:1px solid var(--border);
+            color: var(--muted);
+            font-size:0.9rem;
+        }
+        .about-block{
+            margin-top:24px;
+        }
+        @media (max-width:480px){
+            .site-title{
+                font-size:1.6rem;
+            }
+            nav a{
+                margin-right:16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="/">投杼</a></h1>
+        <p class="site-desc">所思所记，静以抒怀。</p>
+        <nav>
+            <a href="/">首页</a>
+            <a href="#posts">文章</a>
+            <a href="#about">关于</a>
+            <a href="https://github.com/touzhu" target="_blank">GitHub</a>
+        </nav>
+    </header>
+    <main>
+        <section id="posts">
+            <h2 style="margin-bottom:24px;">最新文章</h2>
+            <!-- 示例文章，写新文章直接复制这个块修改 -->
+            <article class="post-item">
+                <h2><a href="posts/first.html">开篇：博客启程</a></h2>
+                <div class="post-date">2026-10-18</div>
+                <div class="post-excerpt">
+                    这里是投杼的个人博客，使用 GitHub Pages 搭建。记录读书、思考、技术与生活碎片。
+                </div>
+            </article>
+            <article class="post-item">
+                <h2><a href="posts/thought.html">随想：文字的意义</a></h2>
+                <div class="post-date">2026-10-20</div>
+                <div class="post-excerpt">
+                    文字不是为了展示，而是留存转瞬即逝的想法，多年之后回头再看，仍能窥见当时心境。
+                </div>
+            </article>
+        </section>
+
+        <section id="about" class="about-block">
+            <h2 style="margin:32px 0 16px;">关于投杼</h2>
+            <p>投杼，一名普通的记录者。</p>
+            <p style="margin-top:10px;color:var(--muted);">博客托管于 GitHub Pages，内容以随笔、读书笔记、技术笔记为主。</p>
+            <p style="margin-top:10px;color:var(--muted);">邮箱：example@shturl.（自行替换）</p>
+        </section>
+    </main>
+    <footer>
+        <p>© 2026 投杼 · Powered by GitHub Pages</p>
+    </footer>
+</body>
+</html>
