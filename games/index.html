@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏 | 投杼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg: #121212;
+            --text: #e6e6e6;
+            --muted: #aaa;
+            --accent: #72a0d8;
+            --game-accent: #88b988;
+            --card: #1e1e1e;
+            --border: #333;
+        }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        .site-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .site-title a {
+            color: var(--text);
+            text-decoration: none;
+        }
+        .site-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-right: 24px;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--accent);
+        }
+        main {
+            padding: 40px 0;
+        }
+        .game-card {
+            padding: 20px;
+            background: var(--card);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--game-accent);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            transform: translateY(-3px);
+        }
+        .game-card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+        }
+        .game-card h2 a {
+            color: var(--text);
+            text-decoration: none;
+        }
+        .game-card h2 a:hover {
+            color: var(--game-accent);
+        }
+        .game-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        footer {
+            padding:32px 0;
+            border-top:1px solid var(--border);
+            color: var(--muted);
+            font-size:0.9rem;
+        }
+        @media (max-width:480px){
+            .site-title{
+                font-size:1.6rem;
+            }
+            nav a{
+                margin-right:16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="site-title"><a href="/">投杼</a></h1>
+        <p class="site-desc">🧊🧊🧊</p>
+        <nav>
+            <a href="/">首页</a>
+            <a href="/#posts">文章</a>
+            <a href="/games/">游戏</a>
+            <a href="/#about">关于</a>
+            <a href="https://github.com/touzhu" target="_blank">GitHub</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2 style="margin-bottom:24px;">小游戏列表</h2>
+            <!-- 新增游戏就复制下面这个卡片 -->
+           <div class="game-card">
+                <h2><a href="fruits/">切水果</a></h2>
+                <div class="game-desc">经典。</div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2026 投杼 · Powered by GitHub Pages</p>
+    </footer>
+</body>
+</html>
