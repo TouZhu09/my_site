@@ -120,7 +120,7 @@
     background:linear-gradient(0deg,rgba(6,18,13,.96),rgba(6,18,13,.6));
     border-top:1px solid var(--line);z-index:5;
   }
-  #shop{flex:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-width:820px}
+  #shop{flex:1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;max-width:920px}
   .card{
     position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
     padding:6px 2px;border-radius:13px;min-width:0;
@@ -314,9 +314,12 @@
     poison: { key:'poison', name:'毒液塔', icon:'🧪', cost:95,  color:'#a3e635', dark:'#4d7c0f',
               range:2.7, dmg:2,   rate:1.0,  proj:'toxin', poison:7, poisonDur:4, desc:'持续毒伤' },
     laser:  { key:'laser',  name:'激光塔', icon:'⚡', cost:165, color:'#ff5d8f', dark:'#9d174d',
-              range:3.4, dmg:18,  rate:0.5,  beam:true, pierce:0.34, desc:'直线穿透' }
+              range:3.4, dmg:18,  rate:0.5,  beam:true, pierce:0.34, desc:'直线穿透' },
+    ultra:  { key:'ultra',  name:'奥特曼', icon:'🦸', cost:215, color:'#8fe4ff', dark:'#1f6fa8',
+              range:3.7, dmg:34,  rate:0.9,  proj:'ultra', splash:1.35,
+              slow:0.45, slowDur:1.4, desc:'奥子光波' }
   };
-  const TOWER_ORDER = ['bottle', 'star', 'fan', 'ice', 'poison', 'laser'];
+  const TOWER_ORDER = ['bottle', 'star', 'fan', 'ice', 'poison', 'laser', 'ultra'];
 
   const ENEMIES = {
     grunt: { hp:52,  speed:1.35, reward:10, r:0.30, body:'#ff8b8b', dark:'#b83b3b', leak:1 },
@@ -696,6 +699,9 @@
     let extra = '';
     if (b.poison) extra += '<span><i>毒伤</i>' + s.poison.toFixed(0) + '/秒 · ' + s.poisonDur.toFixed(1) + 's</span>';
     if (b.pierce) extra += '<span><i>穿透</i>直线群伤</span>';
+    if (b.splash && !b.pierce) extra += '<span><i>范围</i>半径 ' + s.splash.toFixed(2) + ' 格</span>';
+    if (b.slow) extra += '<span><i>减速</i>' + Math.round((1 - s.slow) * 100) + '% · ' + s.slowDur.toFixed(1) + 's</span>';
+    if (b.aura) extra += '<span><i>光环</i>范围内全体伤害</span>';
     elTpStats.innerHTML =
       '<span><i>伤害</i>' + s.dmg.toFixed(0) + '</span>' +
       '<span><i>范围</i>' + s.range.toFixed(1) + '</span>' +
@@ -1027,7 +1033,7 @@
         y: t.y + Math.sin(t.angle) * 0.28,
         tx: target.x, ty: target.y,
         target: target,
-        speed: b.proj === 'bomb' ? 7.5 : (b.proj === 'ice' ? 9 : (b.proj === 'toxin' ? 8 : 13)),
+        speed: b.proj === 'bomb' ? 7.5 : (b.proj === 'ice' ? 9 : (b.proj === 'toxin' ? 8 : (b.proj === 'ultra' ? 6.5 : 13))),
         dmg: s.dmg,
         splash: s.splash,
         slow: s.slow,
@@ -1093,7 +1099,8 @@
 
   function impact(p) {
     if (p.splash > 0) {
-      addFx('ring', p.x, p.y, '#ffd54f', p.splash);
+      addFx('ring', p.x, p.y, p.kind === 'ultra' ? p.color : '#ffd54f', p.splash);
+      if (p.kind === 'ultra') addFx('wave', p.x, p.y, '#ffffff', p.splash * 1.25);
       Audio2.boom();
       const r2 = p.splash * p.splash;
       for (let i = 0; i < state.enemies.length; i++) {
@@ -1102,6 +1109,9 @@
         if (dist2(p.x, p.y, e.x, e.y) <= r2) {
           const isMain = (e === p.target);
           dealDamage(e, p.dmg * (isMain ? 1 : 0.65));
+          if (p.slow > 0) slowEnemy(e, p.slow, p.slowDur);
+          if (p.poison > 0) poisonEnemy(e, p.poison, p.poisonDur);
+          if (p.kind === 'ultra') addFx('spark', e.x, e.y, p.color, 0.28, Math.random() * TAU);
         }
       }
       return;
@@ -1578,6 +1588,37 @@
       ctx.strokeStyle = hexA('#ffffff', 0.3 + 0.55 * ch);
       ctx.lineWidth = 0.028;
       circle(0, 0, 0.21); ctx.stroke();
+    } else if (t.type === 'ultra') {
+      const ch = 1 - Math.max(0, t.cd) / Math.max(0.01, statsOf(t).rate);
+      // 背后能量光晕
+      ctx.fillStyle = hexA(b.color, 0.1 + 0.2 * ch);
+      circle(0, 0, 0.37); ctx.fill();
+      // 双臂
+      ctx.fillStyle = '#c3d3e0';
+      rrect(-0.05, -0.25, 0.21, 0.075, 0.035); ctx.fill();
+      rrect(-0.05, 0.175, 0.21, 0.075, 0.035); ctx.fill();
+      // 身体
+      ctx.fillStyle = '#e8f2fa';
+      rrect(-0.19, -0.13, 0.35, 0.26, 0.1); ctx.fill();
+      // 红色胸纹
+      ctx.fillStyle = '#e8433f';
+      rrect(-0.13, -0.055, 0.13, 0.11, 0.04); ctx.fill();
+      // 头
+      ctx.fillStyle = '#f2f9ff';
+      circle(0.16, 0, 0.088); ctx.fill();
+      // 头鳍
+      ctx.fillStyle = b.color;
+      rrect(0.128, -0.195, 0.05, 0.105, 0.025); ctx.fill();
+      // 眼睛
+      ctx.fillStyle = '#ffe95c';
+      circle(0.2, -0.038, 0.026); ctx.fill();
+      circle(0.2, 0.038, 0.026); ctx.fill();
+      // 胸口计时器（冷却满时最亮）
+      ctx.fillStyle = hexA('#7ef0ff', 0.35 + 0.65 * ch);
+      circle(0.03, 0, 0.05); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.55)';
+      ctx.lineWidth = 0.018;
+      circle(0.03, 0, 0.05); ctx.stroke();
     }
     ctx.restore();
 
@@ -1716,6 +1757,21 @@
         ctx.fillStyle = 'rgba(255,255,255,.85)';
         rrect(-0.03, -0.03, 0.06, 0.06, 0.01); ctx.fill();
         ctx.restore();
+      } else if (p.kind === 'ultra') {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(state.t * 9);
+        ctx.fillStyle = hexA(p.color, 0.22);
+        circle(0, 0, 0.34); ctx.fill();
+        ctx.fillStyle = hexA('#ffffff', 0.9);
+        rrect(-0.045, -0.24, 0.09, 0.48, 0.045); ctx.fill();
+        rrect(-0.24, -0.045, 0.48, 0.09, 0.045); ctx.fill();
+        ctx.fillStyle = p.color;
+        rrect(-0.03, -0.17, 0.06, 0.34, 0.03); ctx.fill();
+        rrect(-0.17, -0.03, 0.34, 0.06, 0.03); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        circle(0, 0, 0.075); ctx.fill();
+        ctx.restore();
       } else {
         const a = Math.atan2(p.ty - p.y, p.tx - p.x);
         ctx.save();
@@ -1744,6 +1800,22 @@
         ctx.fillStyle = hexA(f.color, Math.max(0, 0.9 * (1 - k)));
         circle(f.x, f.y, 0.06 * (1 - k) + 0.01);
         ctx.fill();
+      } else if (f.kind === 'wave') {
+        const a = Math.max(0, 1 - k);
+        const rr = f.size * (0.35 + 0.8 * k);
+        ctx.save();
+        ctx.translate(f.x, f.y);
+        ctx.rotate(state.t * 0.9);
+        ctx.strokeStyle = hexA(f.color, 0.8 * a);
+        ctx.lineWidth = 0.07 * a + 0.012;
+        for (let j = 0; j < 4; j++) {
+          const ang = (j * Math.PI) / 2;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(ang) * rr * 0.3, Math.sin(ang) * rr * 0.3);
+          ctx.lineTo(Math.cos(ang) * rr, Math.sin(ang) * rr);
+          ctx.stroke();
+        }
+        ctx.restore();
       } else if (f.kind === 'beam') {
         const a = Math.max(0, 1 - k);
         ctx.save();
@@ -1850,7 +1922,7 @@
       if (ev.key === ' ') ev.preventDefault();
       return;
     }
-    if (ev.key >= '1' && ev.key <= '6') {
+    if (ev.key >= '1' && ev.key <= '7') {
       pickType(TOWER_ORDER[parseInt(ev.key, 10) - 1]);
     } else if (ev.key === ' ') {
       ev.preventDefault();
