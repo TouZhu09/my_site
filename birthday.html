@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吕紫君 · 生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #271c33, #14101b);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 主标题悬浮 */
+        .container {
+            animation: float 7s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .text-wrap {
+            text-align: center;
+            padding: 40px 60px;
+        }
+
+        .name {
+            font-family: "ZCOOL QingKe HuangYou", cursive;
+            font-size: 96px;
+            color: #e8d8e9;
+            letter-spacing: 16px;
+            text-shadow: 0 0 24px rgba(210, 165, 212, 0.35);
+        }
+
+        .slogan {
+            font-family: "ZCOOL QingKe HuangYou", cursive;
+            font-size: 68px;
+            color: #dcc6dd;
+            margin-top: 18px;
+            letter-spacing: 12px;
+            text-shadow: 0 0 18px rgba(210, 165, 212, 0.28);
+        }
+
+        .sub-text {
+            margin-top: 28px;
+            font-size: 17px;
+            letter-spacing: 8px;
+            color: #b89fb9;
+            opacity: 0.65;
+        }
+
+        /* 朦胧柔光背景点 */
+        .light-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(222, 190, 224, 0.35);
+            filter: blur(16px);
+            animation: breath 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes breath {
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(0.9);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.15);
+            }
+        }
+
+        /* 半透明玻璃金属徽章：18岁 */
+        .badge-18 {
+            position: absolute;
+            top: -80px;
+            font-family: "ZCOOL QingKe HuangYou", cursive;
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff3d6;
+            letter-spacing: 4px;
+            text-shadow:
+                0 0 8px rgba(255, 220, 150, 0.8),
+                0 0 16px rgba(255, 180, 120, 0.45);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.22) 0%,
+                rgba(255, 255, 255, 0.06) 40%,
+                rgba(200, 170, 140, 0.18) 100%
+            );
+            border: 1px solid rgba(255, 215, 140, 0.45);
+            border-radius: 50px;
+            padding: 10px 18px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow:
+                0 0 18px rgba(255, 210, 150, 0.35),
+                inset 0 0 12px rgba(255, 255, 255, 0.25),
+                inset 0 0 24px rgba(255, 220, 160, 0.15);
+            animation: fall linear infinite;
+            z-index: 2;
+        }
+
+        /* 小星光点缀 */
+        .badge-star {
+            position: absolute;
+            top: -40px;
+            font-size: 18px;
+            color: #fff3c4;
+            text-shadow:
+                0 0 10px rgba(255, 243, 196, 0.8),
+                0 0 20px rgba(255, 210, 120, 0.4);
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        /* 淡粉小爱心 */
+        .badge-heart {
+            position: absolute;
+            top: -40px;
+            font-size: 20px;
+            color: #ffb3d1;
+            text-shadow:
+                0 0 10px rgba(255, 179, 209, 0.6),
+                0 0 18px rgba(255, 130, 170, 0.35);
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        /* 缓缓掉落 */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            12% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(180deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+
+    <script>
+        // 背景柔光圆点
+        for (let i = 0; i < 10; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'light-dot';
+            const size = 30 + Math.random() * 100;
+            dot.style.width = size + 'px';
+            dot.style.height = size + 'px';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.animationDelay = Math.random() * 4 + 's';
+            document.body.appendChild(dot);
+        }
+
+        // 创建飘落标志
+        function createBadge(text, type) {
+            const badge = document.createElement('div');
+            badge.className = type;
+            badge.textContent = text;
+            badge.style.left = Math.random() * 100 + '%';
+            badge.style.animationDuration = (10 + Math.random() * 8) + 's';
+            badge.style.animationDelay = Math.random() * 6 + 's';
+            document.body.appendChild(badge);
+        }
+
+        // 半透明玻璃金属“18岁”徽章
+        for (let i = 0; i < 4; i++) {
+            createBadge("18岁", "badge-18");
+        }
+
+        // 辅助星光与爱心
+        for (let i = 0; i < 6; i++) {
+            createBadge("✦", "badge-star");
+        }
+
+        for (let i = 0; i < 5; i++) {
+            createBadge("♡", "badge-heart");
+        }
+    </script>
+
+    <div class="container">
+        <div class="text-wrap">
+            <div class="name">吕紫君</div>
+            <div class="slogan">生日快乐</div>
+            <div class="sub-text">HAPPY BIRTHDAY</div>
+        </div>
+    </div>
+</body>
+</html>
